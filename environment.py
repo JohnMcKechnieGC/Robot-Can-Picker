@@ -109,6 +109,7 @@ class Environment:
                 self.move_east()
 
     def do_nothing(self):
+        self.reward = 0
         if self.record_actions:
             self.actions.append('do nothing')
 

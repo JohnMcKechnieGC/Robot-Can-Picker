@@ -6,6 +6,7 @@ from Robots.smarter_sensing_robot import SmarterSensingRobot
 from Robots.can_following_robot import CanFollowingRobot
 from Robots.experimental_robot import ExperimentalRobot
 from Robots.lookup_table_robot import LookupTableRobot
+from train_q_learner import get_trained_q_learning_robot
 
 
 NUMBER_OF_ACTIONS = 200
@@ -38,5 +39,6 @@ if __name__ == '__main__':
               SmarterSensingRobot('Smarter Sadie'),
               CanFollowingRobot('Can Magnet'),
               ExperimentalRobot('Experimental'),
-              LookupTableRobot('Evolved')]
+              LookupTableRobot('Evolved'),
+              get_trained_q_learning_robot('Q-Learner')]
     evaluate_all_robots(robots)
