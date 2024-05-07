@@ -9,49 +9,67 @@ class QLearningRobot(BaseRobot):
         self.decay_factor = decay_factor
         self.learning_rate = learning_rate
         self.discount_factor = discount_factor
-        self.action_number = -1
-        # Initialize Q-table:
+        self.last_action_number = None
+        self.q_table = None
+        self.initialize_q_table()
+
+    def initialize_q_table(self):
         # Each state/action pair is assigned a small random value
-        MAX_STATES = 3 ** 5
+        max_states = 3 ** 5
         self.q_table = [[random(), random(), random(), random(), random(), random(), random()]
-                        for _ in range(MAX_STATES)]
-        #self.q_table = [[0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]
-        #                for _ in range(MAX_STATES)]
-
-    def decay_epsilon(self):
-        self.epsilon *= self.decay_factor
-
-    def is_choosing_random_action(self):
-        # Decide to choose a random action if a random value [0..1) <= learning rate
-        return random() <= self.epsilon
+                        for _ in range(max_states)]
 
     def choose_action(self, is_learning=False):
         self.sense_environment()
-        # If the robot is still exploring the range of possible actions and rather than
-        # just exploiting what it has learned, and if a random action should be chosen
-        if is_learning and self.is_choosing_random_action():
-            self.action_number = randint(0, len(self.actions) - 1)  # pick a random action
+        # If the robot is still exploring the range of possible actions rather than just
+        # exploiting what it has already learned, and if a random action should be chosen
+        if is_learning and self.should_choose_random_action():
+            # pick a random action
+            action_number = randint(0, len(self.actions) - 1)
         else:
-            # Pick the best known action
+            # Pick the best known action (or one of them if more than one)
             self.calculate_situation_number()
             q_values = self.q_table[self.situation_number]
             max_q = max(q_values)
-            best_actions = [i for i in range(len(q_values)) if q_values[i] == max_q]
-            self.action_number = choice(best_actions)
-            #self.action_number = q_values.index(max_q)
+            best_actions = [i for i in range(
+                len(q_values)) if q_values[i] == max_q]
+            action_number = choice(best_actions)
 
+        self.last_action_number = action_number
         # Return the chosen action
-        return self.actions[self.action_number]
+        return self.actions[action_number]
+
+    def should_choose_random_action(self):
+        # Decide to choose a random action if a random value [0..1) <= learning rate
+        return random() <= self.epsilon
+
+    def decay_epsilon(self):
+        # Make the robot less likely to pick random actions while learning
+        self.epsilon *= self.decay_factor
 
     def reinforce(self, reward):
-        # Q(s, a) < - Q(s, a) + α * (r + γ * max(Q(s', a')) - Q(s, a))
-        # Calculate max(Q(s', a'))
+        assert self.last_action_number is not None
         previous_situation_number = self.situation_number
+
+        current_q_value = self.q_table[previous_situation_number][self.last_action_number]
+
+        # Calculate the new Q-value
+        # Q(s, a) <- Q(s, a) + α * (r + γ * max(Q(s', a')) - Q(s, a))
+        max_next_q = self.calculate_max_q_next_state()
+        new_q_value = current_q_value + \
+            self.learning_rate * (reward + self.discount_factor * max_next_q - current_q_value)
+
+        # Update the Q-table with new Q-value
+        self.q_table[previous_situation_number][self.last_action_number] = new_q_value
+
+    def calculate_max_q_next_state(self):
+        # Q(s, a) <- Q(s, a) + α * (r + γ * max(Q(s', a')) - Q(s, a))
+        # In this function we calculate the max(Q(s', a')) part
+
+        # Get the new environment configuration following the most recent action        
         self.sense_environment()
         self.calculate_situation_number()
-        max_next_q = max(self.q_table[self.situation_number])
 
-        current_q_value = self.q_table[previous_situation_number][self.action_number]
-        current_q_value += \
-            self.learning_rate * (reward + self.discount_factor * max_next_q - current_q_value)
-        self.q_table[previous_situation_number][self.action_number] = current_q_value
+        possible_next_q_values = self.q_table[self.situation_number]
+        max_next_q = max(possible_next_q_values)
+        return max_next_q

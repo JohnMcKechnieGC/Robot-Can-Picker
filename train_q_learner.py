@@ -10,12 +10,12 @@ from random import seed
 #        Choose action a from state s using policy derived from Q(e.g., ε-greedy)
 #        Take action a, observe reward r, and next state s'
 #        Update Q-value for the state-action pair(s, a) using the formula:
-#            Q(s, a) < - Q(s, a) + α * (r + γ * max(Q(s', a')) - Q(s, a))
-#        s < - s' // Move to the new state
+#            Q(s, a) <- Q(s, a) + α * (r + γ * max(Q(s', a')) - Q(s, a))
+#            where α is the learning rate and γ is the discount factor.
+#        s <- s' // Move to the new state
 #        If s is terminal, break out of the loop
 #    End For
 # End For
-
 
 def get_trained_q_learning_robot(name, number_of_actions=200, number_of_episodes=400, 
                                  epsilon=0.99, decay_factor=0.99, learning_rate=0.1, 
@@ -29,7 +29,7 @@ def get_trained_q_learning_robot(name, number_of_actions=200, number_of_episodes
         environment.randomise()
         learning_robot.set_environment(environment)
         environment.set_robot(learning_robot)
-        for i in range(number_of_actions):
+        for _ in range(number_of_actions):
             action = learning_robot.choose_action(is_learning=True)
             environment.perform_action(action)
             learning_robot.reinforce(environment.reward)

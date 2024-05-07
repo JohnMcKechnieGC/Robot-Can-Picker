@@ -28,8 +28,8 @@ def evaluate_robot(robot):
     print(f'Average score for {robot.name}: {total_score / NUMBER_OF_TRIALS}')
     
 
-def evaluate_all_robots(robots):
-    for robot in robots:
+def evaluate_all_robots(robots_under_test):
+    for robot in robots_under_test:
         evaluate_robot(robot)
 
 
