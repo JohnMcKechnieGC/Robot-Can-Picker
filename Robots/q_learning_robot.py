@@ -3,12 +3,18 @@ from random import random, randint, choice
 
 
 class QLearningRobot(BaseRobot):
-    def __init__(self, name='', epsilon=0.99, decay_factor=0.99, learning_rate=0.1, discount_factor=0.9):
+    def __init__(self, name='', 
+                 epsilon=0.99, 
+                 decay_factor=0.99, 
+                 learning_rate=0.1, 
+                 discount_factor=0.9,
+                 min_epsilon=0.1):
         super().__init__(name)
         self.epsilon = epsilon
         self.decay_factor = decay_factor
         self.learning_rate = learning_rate
         self.discount_factor = discount_factor
+        self.min_epsilon = min_epsilon
         self.last_action_number = None
         self.q_table = None
         self.initialize_q_table()
@@ -44,8 +50,9 @@ class QLearningRobot(BaseRobot):
         return random() <= self.epsilon
 
     def decay_epsilon(self):
-        # Make the robot less likely to pick random actions while learning
-        self.epsilon *= self.decay_factor
+        # Make the robot less likely to pick random actions while learning while ensuring that
+        # there is still some small chance of choosing random actions 
+        self.epsilon = max(self.epsilon * self.decay_factor, self.min_epsilon)
 
     def reinforce(self, reward):
         assert self.last_action_number is not None
