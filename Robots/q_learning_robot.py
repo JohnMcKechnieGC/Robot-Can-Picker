@@ -4,11 +4,11 @@ from random import random, randint, choice
 
 class QLearningRobot(BaseRobot):
     def __init__(self, name='', 
-                 epsilon=0.99, 
-                 decay_factor=0.99, 
-                 learning_rate=0.1, 
-                 discount_factor=0.9,
-                 min_epsilon=0.1):
+                 epsilon=0.99,          # probability of choosing a random action
+                 decay_factor=0.99,     # rate at which epsilon decays 
+                 learning_rate=0.1,     # factor by which last reward affects current Q-value
+                 discount_factor=0.9,   # factor by which we discount future rewards
+                 min_epsilon=0.1):      # minimum value of epsilon
         super().__init__(name)
         self.epsilon = epsilon
         self.decay_factor = decay_factor
