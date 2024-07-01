@@ -1,8 +1,15 @@
+"""
+Implement a Q-Learning robot that is compatible with the get_trained_q_learning_robot function
+in train_q_learner.py
+"""
+
 from random import random, randint, choice
 from Robots.base_robot import BaseRobot
 
 
 class QLearningRobot(BaseRobot):
+    """Simulated robot that demonstrates Q-Learning."""
+
     def __init__(self, name='',
                  epsilon=0.99,          # probability of choosing a random action
                  decay_factor=0.99,     # rate at which epsilon decays
@@ -20,7 +27,7 @@ class QLearningRobot(BaseRobot):
         self.initialize_q_table()
 
     def initialize_q_table(self):
-        # Each state/action pair is assigned a small random value
+        """Each state/action pair is assigned a small random value."""
         max_states = 3 ** 5  # Robot can see 5 squares, 3 possible values each (empty, can, wall)
         self.q_table = [[random(), random(), random(), random(), random(), random(), random()]
                         for _ in range(max_states)]
@@ -46,15 +53,18 @@ class QLearningRobot(BaseRobot):
         return self.actions[action_number]
 
     def should_choose_random_action(self):
-        # Decide to choose a random action if a random value [0..1) <= learning rate
+        """Decide to choose a random action if a random value [0..1) <= learning rate."""
         return random() <= self.epsilon
 
     def decay_epsilon(self):
-        # Make the robot less likely to pick random actions while learning while ensuring that
-        # there is still some small chance of choosing random actions 
+        """
+        Make the robot less likely to pick random actions while learning while ensuring that
+        there is still some small chance of choosing random actions.
+        """
         self.epsilon = max(self.epsilon * self.decay_factor, self.min_epsilon)
 
     def reinforce(self, reward):
+        """Apply the Q-Learning formula."""
         assert self.last_action_number is not None
         previous_situation_number = self.situation_number
 
@@ -70,10 +80,12 @@ class QLearningRobot(BaseRobot):
         self.q_table[previous_situation_number][self.last_action_number] = new_q_value
 
     def calculate_max_q_next_state(self):
+        """
         # Q(s, a) <- Q(s, a) + α * (r + γ * max(Q(s', a')) - Q(s, a))
-        # In this function we calculate the max(Q(s', a')) part
+        # In this function we calculate the max(Q(s', a')) part.
+        """
 
-        # Get the new environment configuration following the most recent action        
+        # Get the new environment configuration following the most recent action
         self.sense_environment()
         self.calculate_situation_number()
 
