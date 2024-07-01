@@ -1,3 +1,11 @@
+"""
+Show the progress of the robot under test.
+Key: 0 - empty square
+     1 - square contains a can
+     3 - square contains robot
+     4 - square contains robot and a can
+"""
+
 from environment import Environment
 # from Robots.base_robot import BaseRobot as Robot
 # from Robots.sensing_robot import SensingRobot as Robot
@@ -23,14 +31,10 @@ for _ in range(NUMBER_OF_TRIALS):
     environment.display(test_robot.x, test_robot.y)
     for i in range(NUMBER_OF_ACTIONS):
         action = test_robot.choose_action()
-        current_score = test_robot.score
         environment.perform_action(action)
-        updated_score = test_robot.score
         environment.display(test_robot.x, test_robot.y)
         print(action, test_robot.score, i)
     print(test_robot.score)
     total_score += test_robot.score
 
-average_score = total_score / NUMBER_OF_TRIALS
-
-print('Average score:', average_score)
+print('Average score:', total_score / NUMBER_OF_TRIALS)
