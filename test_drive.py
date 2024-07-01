@@ -1,14 +1,17 @@
 from environment import Environment
-#from Robots.experimental_robot import ExperimentalRobot as Robot
-#from Robots.lookup_table_robot import LookupTableRobot as Robot
+# from Robots.base_robot import BaseRobot as Robot
+# from Robots.sensing_robot import SensingRobot as Robot
+# from Robots.smarter_sensing_robot import SmarterSensingRobot as Robot
+# from Robots.can_following_robot import CanFollowingRobot as Robot
+# from Robots.experimental_robot import ExperimentalRobot as Robot
+# from Robots.lookup_table_robot import LookupTableRobot as Robot
 from train_q_learner import get_trained_q_learning_robot
 
 
 NUMBER_OF_ACTIONS = 200
 NUMBER_OF_TRIALS = 1
 
-#test_robot = Robot('Robot under test')
-test_robot = get_trained_q_learning_robot('Robot under test')
+test_robot = get_trained_q_learning_robot('Robot under test')  # Robot('Robot under test')
 environment = Environment()
 
 total_score = 0

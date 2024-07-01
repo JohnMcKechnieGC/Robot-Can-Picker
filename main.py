@@ -40,5 +40,6 @@ if __name__ == '__main__':
               CanFollowingRobot('Can Magnet'),
               ExperimentalRobot('Experimental'),
               LookupTableRobot('Evolved'),
-              get_trained_q_learning_robot('Q-Learner')]
+              get_trained_q_learning_robot('Q-Learner')
+              ]
     evaluate_all_robots(robots)

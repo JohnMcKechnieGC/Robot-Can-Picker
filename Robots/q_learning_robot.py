@@ -1,11 +1,11 @@
-from Robots.base_robot import BaseRobot
 from random import random, randint, choice
+from Robots.base_robot import BaseRobot
 
 
 class QLearningRobot(BaseRobot):
-    def __init__(self, name='', 
+    def __init__(self, name='',
                  epsilon=0.99,          # probability of choosing a random action
-                 decay_factor=0.99,     # rate at which epsilon decays 
+                 decay_factor=0.99,     # rate at which epsilon decays
                  learning_rate=0.1,     # factor by which last reward affects current Q-value
                  discount_factor=0.9,   # factor by which we discount future rewards
                  min_epsilon=0.1):      # minimum value of epsilon
@@ -21,7 +21,7 @@ class QLearningRobot(BaseRobot):
 
     def initialize_q_table(self):
         # Each state/action pair is assigned a small random value
-        max_states = 3 ** 5
+        max_states = 3 ** 5  # Robot can see 5 squares, 3 possible values each (empty, can, wall)
         self.q_table = [[random(), random(), random(), random(), random(), random(), random()]
                         for _ in range(max_states)]
 
@@ -37,8 +37,8 @@ class QLearningRobot(BaseRobot):
             self.calculate_situation_number()
             q_values = self.q_table[self.situation_number]
             max_q = max(q_values)
-            best_actions = [i for i in range(
-                len(q_values)) if q_values[i] == max_q]
+            best_actions = [action for action in range(len(q_values))
+                            if q_values[action] == max_q]
             action_number = choice(best_actions)
 
         self.last_action_number = action_number
