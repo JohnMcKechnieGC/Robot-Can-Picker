@@ -1,6 +1,6 @@
 import numpy as np
 from random import random, randint, seed
-from action import Action
+from Problem_Domain.action import Action
 
 
 class Environment:

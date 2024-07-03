@@ -1,6 +1,6 @@
 from random import randint, random, sample
 from statistics import mean, stdev
-from environment import Environment
+from Problem_Domain.environment import Environment
 from Robots.lookup_table_robot import LookupTableRobot
 
 LOOKUP_TABLE_SIZE = 243

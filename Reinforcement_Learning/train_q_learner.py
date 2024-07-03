@@ -17,13 +17,13 @@ End For
 """
 
 from random import seed
-from environment import Environment
+from Problem_Domain.environment import Environment
 from Robots.q_learning_robot import QLearningRobot
 
 
 def get_trained_q_learning_robot(name, number_of_actions=200, number_of_episodes=400,
                                  epsilon=0.99, decay_factor=0.99, learning_rate=0.1,
-                                 discount_factor=0.9):
+                                 discount_factor=0.9, min_epsilon=0.1):
     """
     Implement the Q-Learning algorithm above with respect to our QLearningRobot.
     """
@@ -32,7 +32,8 @@ def get_trained_q_learning_robot(name, number_of_actions=200, number_of_episodes
                                     epsilon=epsilon,
                                     decay_factor=decay_factor,
                                     learning_rate=learning_rate,
-                                    discount_factor=discount_factor)
+                                    discount_factor=discount_factor,
+                                    min_epsilon=min_epsilon)
     environment = Environment()
 
     for _ in range(number_of_episodes):

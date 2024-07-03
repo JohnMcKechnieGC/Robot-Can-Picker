@@ -1,5 +1,5 @@
 from Robots.base_robot import BaseRobot, Feature
-from action import Action
+from Problem_Domain.action import Action
 
 
 class SensingRobot(BaseRobot):

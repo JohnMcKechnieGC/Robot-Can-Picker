@@ -31,6 +31,8 @@ class QLearningRobot(BaseRobot):
         max_states = 3 ** 5  # Robot can see 5 squares, 3 possible values each (empty, can, wall)
         self.q_table = [[random(), random(), random(), random(), random(), random(), random()]
                         for _ in range(max_states)]
+        # Alternatively, we can initialize the Q-Table with all zeros
+        # self.q_table = [[0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0] for _ in range(max_states)]
 
     def choose_action(self, is_learning=False):
         self.sense_environment()

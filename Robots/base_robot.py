@@ -1,8 +1,8 @@
 from random import choice
 
-from action import Action
-from environment import Environment
-from sensory_data import SensoryData, Feature
+from Problem_Domain.action import Action
+from Problem_Domain.environment import Environment
+from Problem_Domain.sensory_data import SensoryData, Feature
 
 
 class BaseRobot:
