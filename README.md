@@ -6,4 +6,4 @@ The following files can be executed directly:
 1. main.py - Evaluates a selection of robots
 2. test_drive.py - Examine the behaviour of a specific robot
 3. genetic_algorithm.py - Evolve a robot controller, compatible with LookupTableRobot
-4. optimize_q_learnier.py - Find optimal hyperparameters for training the QLearningRobot
+4. optimize_q_learner.py - Find optimal hyperparameters for training the QLearningRobot
