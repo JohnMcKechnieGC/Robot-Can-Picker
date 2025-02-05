@@ -10,20 +10,22 @@ from Problem_Domain.environment import Environment
 # from Robots.base_robot import BaseRobot as Robot
 # from Robots.sensing_robot import SensingRobot as Robot
 # from Robots.smarter_sensing_robot import SmarterSensingRobot as Robot
-# from Robots.can_following_robot import CanFollowingRobot as Robot
+from Robots.can_following_robot import CanFollowingRobot as Robot
 # from Robots.experimental_robot import ExperimentalRobot as Robot
 # from Robots.lookup_table_robot import LookupTableRobot as Robot
-from Reinforcement_Learning.train_q_learner import get_trained_q_learning_robot_optimized
+# from Reinforcement_Learning.train_q_learner import get_trained_q_learning_robot
+# from Reinforcement_Learning.train_q_learner import get_trained_q_learning_robot_optimized
 
 
 NUMBER_OF_TRIALS = 1
 NUMBER_OF_ACTIONS = 200
 
-#test_robot = Robot('Robot under test')
+test_robot = Robot('Robot under test')
 #test_robot = get_trained_q_learning_robot('Robot under test')
 
 # Optimised Q-Learner
-test_robot = get_trained_q_learning_robot_optimized('Robot under test')
+# test_robot = get_trained_q_learning_robot_optimized('Robot under test')
+
 environment = Environment()
 
 total_score = 0

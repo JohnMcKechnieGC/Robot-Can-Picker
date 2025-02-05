@@ -60,7 +60,7 @@ def objective(trial):
             learning_robot.decay_epsilon()
             scores.append(learning_robot.score)
 
-        # Teturn the average of the last NUMBER_OF_ENVIRONMENTS_FOR_EVALUATION episodes.
+        # Return the average of the last NUMBER_OF_ENVIRONMENTS_FOR_EVALUATION episodes.
         # This helps us to avoid the initial environments when the robot was untrained.
         return statistics.mean(scores[-NUMBER_OF_ENVIRONMENTS_FOR_EVALUATION:])
 

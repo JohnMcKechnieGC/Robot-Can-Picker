@@ -51,12 +51,14 @@ def evaluate_all_robots(robots_under_test):
 
 
 if __name__ == '__main__':
-    robots = [BaseRobot('Random Robby'),
-              SensingRobot('Sensing Sadie'),
-              SmarterSensingRobot('Smarter Sally'),
-              CanFollowingRobot('Magnetic Micky'),
-              ExperimentalRobot('Experimental Eddie'),
-              LookupTableRobot('Evolved Eva'),
-              get_trained_q_learning_robot('Quentin the Q-Learner'),
-              get_trained_q_learning_robot_optimized('Optimus Q')]
+    robots = [
+        BaseRobot('Random Robby'),
+        SensingRobot('Sensing Sadie'),
+        SmarterSensingRobot('Smarter Sally'),
+        CanFollowingRobot('Magnetic Micky'),
+        ExperimentalRobot('Experimental Eddie'),
+        LookupTableRobot('Evolved Eva'),
+        get_trained_q_learning_robot('Quentin the Q-Learner'),
+        get_trained_q_learning_robot_optimized('Optimus Q'),
+        ]
     evaluate_all_robots(robots)

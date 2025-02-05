@@ -14,7 +14,7 @@ class QLearningRobot(BaseRobot):
                  epsilon=0.99,          # probability of choosing a random action
                  decay_factor=0.99,     # rate at which epsilon decays
                  learning_rate=0.1,     # factor by which last reward affects current Q-value
-                 discount_factor=0.9,   # factor by which we discount future rewards
+                 discount_factor=0.9,   # factor by which we discount future rewards (γ: gamma)
                  min_epsilon=0.1):      # minimum value of epsilon
         super().__init__(name)
         self.epsilon = epsilon
@@ -55,12 +55,12 @@ class QLearningRobot(BaseRobot):
         return self.actions[action_number]
 
     def should_choose_random_action(self):
-        """Decide to choose a random action if a random value [0..1) <= learning rate."""
+        """Decide to choose a random action if a random value [0..1) <= epsilon."""
         return random() <= self.epsilon
 
     def decay_epsilon(self):
         """
-        Make the robot less likely to pick random actions while learning while ensuring that
+        Make the robot less likely to pick random actions during learning while ensuring that
         there is still some small chance of choosing random actions.
         """
         self.epsilon = max(self.epsilon * self.decay_factor, self.min_epsilon)
