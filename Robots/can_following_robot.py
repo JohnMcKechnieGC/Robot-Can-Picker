@@ -5,7 +5,10 @@ from random import choice
 class CanFollowingRobot(SmarterSensingRobot):
     def choose_action(self):
         # Use the SmarterSensingRobot to get the default action.
-        action = SmarterSensingRobot.choose_action(self)
+        while True:
+            action = SmarterSensingRobot.choose_action(self)
+            if action != Action.do_nothing:
+                break
 
         # Favour actions that walk towards a can if we can't pick one up right now.
         if action != Action.pick_up_can:
