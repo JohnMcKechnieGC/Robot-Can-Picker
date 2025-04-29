@@ -59,10 +59,19 @@ def get_trained_q_learning_robot_optimized(name):
     """
     Get a QLearningRobot using hyperparameters optimized by Optuna. 
     """
+    # return get_trained_q_learning_robot(name,
+    #                                     epsilon=0.5516791135810103,
+    #                                     decay_factor=0.6068794434698493,
+    #                                     learning_rate=0.9994968692336417,
+    #                                     discount_factor=0.3559625242060554,
+    #                                     min_epsilon=7.088018732062675e-06,
+    #                                     number_of_episodes=896)
     return get_trained_q_learning_robot(name,
-                                        epsilon=0.5516791135810103,
-                                        decay_factor=0.6068794434698493,
-                                        learning_rate=0.9994968692336417,
-                                        discount_factor=0.3559625242060554,
-                                        min_epsilon=7.088018732062675e-06,
-                                        number_of_episodes=896)
+                                        epsilon=0.6,
+                                        decay_factor=0.3,
+                                        learning_rate=0.9,
+                                        discount_factor=0.5,
+                                        min_epsilon=0.0,
+                                        number_of_episodes=1200)
+
+# 'learning_rate': 0.9, 'discount_factor': 0.5, 'min_epsilon': 0.0, 'number_of_episodes': 1200}
