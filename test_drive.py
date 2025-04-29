@@ -20,11 +20,12 @@ from Robots.can_following_robot import CanFollowingRobot as Robot
 NUMBER_OF_TRIALS = 1
 NUMBER_OF_ACTIONS = 200
 
+# Choose which robot to test:
+# Be sure to comment/uncomment the appropriate import statements above
 test_robot = Robot('Robot under test')
-#test_robot = get_trained_q_learning_robot('Robot under test')
-
-# Optimised Q-Learner
+# Q-Learning robots
 # test_robot = get_trained_q_learning_robot_optimized('Robot under test')
+# test_robot = get_trained_q_learning_robot('Robot under test')
 
 environment = Environment()
 
