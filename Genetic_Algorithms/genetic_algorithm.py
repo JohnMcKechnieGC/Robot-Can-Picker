@@ -14,7 +14,7 @@ MUTATION_RATE = EXPECTED_NO_OF_MUTATIONS_PER_CHILD/LOOKUP_TABLE_SIZE
 
 
 def random_action():
-    return randint(1, 7)
+    return randint(0, 6)
 
 
 def select_parent(fitnesses):

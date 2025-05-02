@@ -6,7 +6,7 @@ class LookupTableRobot(BaseRobot):
         super().__init__(name)
         if action_lookup_table is None:
             # This default lookup table is the result of evolving the
-            # * robot controller using a genetic algorithm.
+            # robot controller using a genetic algorithm.
             action_lookup_table =\
                 [1, 1, 4, 3, 3, 3, 4, 4, 4, 0, 0, 0, 0, 0, 1, 0, 0, 0, 1, 5, 5,
                  5, 5, 1, 1, 5, 3, 4, 4, 4, 4, 4, 0, 2, 3, 4, 0, 0, 0, 4, 0, 5,
