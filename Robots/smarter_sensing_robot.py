@@ -1,3 +1,4 @@
+from tkinter import N
 from Robots.base_robot import BaseRobot, Feature, Action
 
 
@@ -21,17 +22,33 @@ class SmarterSensingRobot(BaseRobot):
         # and don't try to pick up a can if one hasn't been detected.
         if self.sensory_data.centre_square == Feature.can:
             action = Action.pick_up_can
-        elif self.sensory_data.north_square == Feature.wall:
-            while action == Action.move_north or action == Action.move_random or action == Action.pick_up_can:
+        else:
+            while (
+                self.sensory_data.north_square == Feature.wall \
+                    and action in [Action.move_north, Action.move_random] or \
+                self.sensory_data.west_square == Feature.wall \
+                    and action in [Action.move_west, Action.move_random] or \
+                self.sensory_data.east_square == Feature.wall \
+                    and action in [Action.move_east, Action.move_random] or \
+                self.sensory_data.south_square == Feature.wall \
+                    and action in [Action.move_south, Action.move_random] or \
+                self.sensory_data.centre_square != Feature.can and action == Action.pick_up_can):
                 action = BaseRobot.choose_action(self)
-        elif self.sensory_data.west_square == Feature.wall:
-            while action == Action.move_west or action == Action.move_random or action == Action.pick_up_can:
-                action = BaseRobot.choose_action(self)
-        elif self.sensory_data.east_square == Feature.wall:
-            while action == Action.move_east or action == Action.move_random or action == Action.pick_up_can:
-                action = BaseRobot.choose_action(self)
-        elif self.sensory_data.south_square == Feature.wall:
-            while action == Action.move_south or action == Action.move_random or action == Action.pick_up_can:
-                action = BaseRobot.choose_action(self)
+
+        # An earlier attempt that still managed to walk into walls:
+        # if self.sensory_data.centre_square == Feature.can:
+        #     action = Action.pick_up_can
+        # elif self.sensory_data.north_square == Feature.wall:
+        #     while action == Action.move_north or action == Action.move_random or action == Action.pick_up_can:
+        #         action = BaseRobot.choose_action(self)
+        # elif self.sensory_data.west_square == Feature.wall:
+        #     while action == Action.move_west or action == Action.move_random or action == Action.pick_up_can:
+        #         action = BaseRobot.choose_action(self)
+        # elif self.sensory_data.east_square == Feature.wall:
+        #     while action == Action.move_east or action == Action.move_random or action == Action.pick_up_can:
+        #         action = BaseRobot.choose_action(self)
+        # elif self.sensory_data.south_square == Feature.wall:
+        #     while action == Action.move_south or action == Action.move_random or action == Action.pick_up_can:
+        #         action = BaseRobot.choose_action(self)
 
         return action
