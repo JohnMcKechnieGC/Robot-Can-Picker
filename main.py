@@ -55,7 +55,7 @@ if __name__ == '__main__':
         BaseRobot('Random Robby'),
         SensingRobot('Sensing Sadie'),
         SmarterSensingRobot('Smarter Sally'),
-        CanFollowingRobot('Magnetic Micky'),
+        CanFollowingRobot('Magnetic Morag'),
         ExperimentalRobot('Experimental Eddie'),
         LookupTableRobot('Evolved Eva'),
         get_trained_q_learning_robot('Quentin the Q-Learner'),
