@@ -1,11 +1,4 @@
-"""
-Show the progress of the robot under test.
-Key: 0 - empty square
-     1 - square contains a can
-     3 - square contains robot
-     4 - square contains robot and a can
-"""
-
+import time
 from Problem_Domain.environment import Environment
 # from Robots.base_robot import BaseRobot as Robot
 # from Robots.sensing_robot import SensingRobot as Robot
@@ -19,6 +12,7 @@ from Robots.can_following_robot import CanFollowingRobot as Robot
 
 NUMBER_OF_TRIALS = 1
 NUMBER_OF_ACTIONS = 200
+REDRAW_DELAY = 0.2
 
 # Choose which robot to test:
 # Be sure to comment/uncomment the appropriate import statements above
@@ -40,6 +34,7 @@ for _ in range(NUMBER_OF_TRIALS):
         action = test_robot.choose_action()
         environment.perform_action(action)
         environment.display(test_robot.x, test_robot.y)
+        time.sleep(REDRAW_DELAY)
         print(action, test_robot.score, i)
     print(test_robot.score)
     total_score += test_robot.score

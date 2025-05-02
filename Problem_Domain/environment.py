@@ -1,7 +1,17 @@
 import os
+from colorama import init, Back
 import numpy as np
 from random import random, randint, seed
 from Problem_Domain.action import Action
+
+
+init(autoreset=True)
+colour_map = {
+    0: Back.BLACK + '  ',
+    1: Back.YELLOW + '  ',
+    3: Back.BLACK + '🤖',
+    4: Back.YELLOW + '🤖',
+}
 
 
 def clear_screen():
@@ -47,7 +57,9 @@ class Environment:
         else:
             printable_grid = np.array(self.grid)
             printable_grid[robot_x][robot_y] += 3
-            print(np.transpose(printable_grid))
+            #print(np.transpose(printable_grid))
+            for row in np.transpose(printable_grid):
+                print(''.join(colour_map[val] for val in row))
         print('Cans:', np.count_nonzero(self.grid == 1))
 
     def pick_up_can(self):
