@@ -1,42 +1,74 @@
+import os
 import time
+from colorama import init, Back
+
 from Problem_Domain.environment import Environment
-# from Robots.base_robot import BaseRobot as Robot
+from Robots.base_robot import BaseRobot as Robot
 # from Robots.sensing_robot import SensingRobot as Robot
 # from Robots.smarter_sensing_robot import SmarterSensingRobot as Robot
-from Robots.can_following_robot import CanFollowingRobot as Robot
+# from Robots.can_following_robot import CanFollowingRobot as Robot
 # from Robots.experimental_robot import ExperimentalRobot as Robot
 # from Robots.lookup_table_robot import LookupTableRobot as Robot
 # from Reinforcement_Learning.train_q_learner import get_trained_q_learning_robot
 # from Reinforcement_Learning.train_q_learner import get_trained_q_learning_robot_optimized
 
-
-NUMBER_OF_TRIALS = 1
-NUMBER_OF_ACTIONS = 200
-REDRAW_DELAY = 0.2
-
 # Choose which robot to test:
 # Be sure to comment/uncomment the appropriate import statements above
-test_robot = Robot('Robot under test')
+ROBOT = Robot('Robot under test')
 # Q-Learning robots
-# test_robot = get_trained_q_learning_robot_optimized('Robot under test')
-# test_robot = get_trained_q_learning_robot('Robot under test')
+# ROBOT = get_trained_q_learning_robot('Robot under test')
+# ROBOT = get_trained_q_learning_robot_optimized('Robot under test')
 
-environment = Environment()
+NUMBER_OF_ACTIONS = 200
+REDRAW_DELAY = 0.2
+ENVIRONMENT = Environment()
 
-total_score = 0
 
-for _ in range(NUMBER_OF_TRIALS):
-    environment.randomise()
-    test_robot.set_environment(environment)
-    environment.set_robot(test_robot)
-    environment.display(test_robot.x, test_robot.y)
-    for i in range(NUMBER_OF_ACTIONS):
-        action = test_robot.choose_action()
-        environment.perform_action(action)
-        environment.display(test_robot.x, test_robot.y)
-        time.sleep(REDRAW_DELAY)
-        print(action, test_robot.score, i)
-    print(test_robot.score)
-    total_score += test_robot.score
+init(autoreset=True)
+env_colour_map = {
+    0: Back.BLACK + '  ',
+    1: Back.YELLOW + '  ',
+    3: Back.BLACK + '🤖',
+    4: Back.YELLOW + '🤖',
+}
 
-print('Average score:', total_score / NUMBER_OF_TRIALS)
+reward_colour_map = {
+    -5: Back.RED + '  ',
+    -1: Back.MAGENTA + '  ',
+    0: Back.BLACK + ' ',
+    10: Back.GREEN + ' ',
+}
+
+def clear_screen():
+    os.system('cls' if os.name == 'nt' else 'clear')
+
+
+def display_environment(clear=True):
+    if clear:
+        clear_screen()
+    for row in ENVIRONMENT.printable_grid():
+        print(''.join(env_colour_map[val] for val in row))
+
+
+def display(step, action):
+    display_environment()
+    print(f'Cans: {ENVIRONMENT.number_of_cans()}')
+    print(f'Score: {ROBOT.score}')
+    print(f'Reward: {ENVIRONMENT.reward}')
+    print(f'Rewards: {''.join(reward_colour_map[val] for val in ENVIRONMENT.recent_rewards(40))}')
+    print(f'Time step: {step}')
+    print(action)
+
+
+ENVIRONMENT.randomise(time.time())
+ROBOT.set_environment(ENVIRONMENT)
+ENVIRONMENT.set_robot(ROBOT)
+display_environment()
+
+for i in range(NUMBER_OF_ACTIONS):
+    action = ROBOT.choose_action()
+    ENVIRONMENT.perform_action(action)
+    display(i, action)
+    time.sleep(REDRAW_DELAY)
+    if ENVIRONMENT.number_of_cans() == 0:
+        break

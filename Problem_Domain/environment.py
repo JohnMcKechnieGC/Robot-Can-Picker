@@ -1,21 +1,6 @@
-import os
-from colorama import init, Back
 import numpy as np
 from random import random, randint, seed
 from Problem_Domain.action import Action
-
-
-init(autoreset=True)
-colour_map = {
-    0: Back.BLACK + '  ',
-    1: Back.YELLOW + '  ',
-    3: Back.BLACK + '🤖',
-    4: Back.YELLOW + '🤖',
-}
-
-
-def clear_screen():
-    os.system('cls' if os.name == 'nt' else 'clear')
 
 
 class Environment:
@@ -31,6 +16,7 @@ class Environment:
         self.actions = []
         self.record_actions = record_actions
         self.reward = 0
+        self.rewards = []
         self.randomise(random_seed)
 
     def randomise(self, random_seed=None):
@@ -43,24 +29,26 @@ class Environment:
         self.robot = None
         self.actions = []
 
+    def printable_grid(self):
+        grid = np.array(self.grid)
+        if self.robot is not None:
+            grid[self.robot.x][self.robot.y] += 3
+        grid = np.transpose(grid)
+        return grid
+    
+    def recent_rewards(self, n=10):
+        if len(self.rewards) < n:
+            return self.rewards
+        return self.rewards[-n:]
+
     def set_robot(self, robot):
         self.robot = robot
         robot.x = 0
         robot.y = 0
         robot.score = 0
 
-    def display(self, robot_x=None, robot_y=None, clear=True):
-        if clear:
-            clear_screen()
-        if robot_x is None or robot_y is None:
-            print(np.transpose(self.grid))
-        else:
-            printable_grid = np.array(self.grid)
-            printable_grid[robot_x][robot_y] += 3
-            #print(np.transpose(printable_grid))
-            for row in np.transpose(printable_grid):
-                print(''.join(colour_map[val] for val in row))
-        print('Cans:', np.count_nonzero(self.grid == 1))
+    def number_of_cans(self):
+        return np.count_nonzero(self.grid == 1)
 
     def pick_up_can(self):
         if self.grid[self.robot.x][self.robot.y] == 1:
@@ -150,3 +138,4 @@ class Environment:
             case Action.do_nothing:
                 self.do_nothing()
         self.robot.score += self.reward
+        self.rewards.append(self.reward)
