@@ -1,6 +1,11 @@
+import os
 import numpy as np
 from random import random, randint, seed
 from Problem_Domain.action import Action
+
+
+def clear_screen():
+    os.system('cls' if os.name == 'nt' else 'clear')
 
 
 class Environment:
@@ -22,8 +27,9 @@ class Environment:
         if random_seed is not None:
             seed(random_seed)
         self.grid = \
-            np.array([[0 if random() < 1 - Environment.CAN_PROBABILITY else 1 for _ in range(Environment.LENGTH)]
-                      for _ in range(Environment.LENGTH)])
+            np.array([[0 if random() < 1 - Environment.CAN_PROBABILITY else 1
+                       for _ in range(Environment.LENGTH)]
+                       for _ in range(Environment.LENGTH)])
         self.robot = None
         self.actions = []
 
@@ -33,7 +39,9 @@ class Environment:
         robot.y = 0
         robot.score = 0
 
-    def display(self, robot_x=None, robot_y=None):
+    def display(self, robot_x=None, robot_y=None, clear=True):
+        if clear:
+            clear_screen()
         if robot_x is None or robot_y is None:
             print(np.transpose(self.grid))
         else:
