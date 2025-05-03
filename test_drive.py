@@ -21,7 +21,7 @@ ROBOT = Robot('Robot under test')
 
 NUMBER_OF_ACTIONS = 200
 REDRAW_DELAY = 0.2
-ENVIRONMENT = Environment()
+ENVIRONMENT = Environment(record_rewards=True)
 
 
 init(autoreset=True)
@@ -43,16 +43,15 @@ def clear_screen():
     os.system('cls' if os.name == 'nt' else 'clear')
 
 
-def display_environment(clear=True):
-    if clear:
-        clear_screen()
+def display_environment():
     for row in ENVIRONMENT.printable_grid():
         print(''.join(env_colour_map[val] for val in row))
 
 
 def display(step, action):
+    clear_screen()
     display_environment()
-    print(f'Cans: {ENVIRONMENT.number_of_cans()}')
+    print(f'Cans: {ENVIRONMENT.count_cans()}')
     print(f'Score: {ROBOT.score}')
     print(f'Reward: {ENVIRONMENT.reward}')
     print(f'Rewards: {''.join(reward_colour_map[val] for val in ENVIRONMENT.recent_rewards(40))}')
@@ -63,6 +62,7 @@ def display(step, action):
 ENVIRONMENT.randomise(time.time())
 ROBOT.set_environment(ENVIRONMENT)
 ENVIRONMENT.set_robot(ROBOT)
+clear_screen()
 display_environment()
 
 for i in range(NUMBER_OF_ACTIONS):
@@ -70,5 +70,5 @@ for i in range(NUMBER_OF_ACTIONS):
     ENVIRONMENT.perform_action(action)
     display(i, action)
     time.sleep(REDRAW_DELAY)
-    if ENVIRONMENT.number_of_cans() == 0:
+    if ENVIRONMENT.count_cans() == 0:
         break

@@ -10,14 +10,16 @@ class Environment:
     PENALTY_FOR_PICKING_UP_NOTHING = -1
     PENALTY_FOR_HITTING_A_WALL = -5
 
-    def __init__(self, random_seed=None, record_actions=False):
+    def __init__(self, random_seed=None, record_actions=False, record_rewards=False):
         self.grid = None
         self.robot = None
         self.actions = []
         self.record_actions = record_actions
+        self.record_rewards = record_rewards
         self.reward = 0
         self.rewards = []
         self.randomise(random_seed)
+        self.number_of_cans = self.count_cans()
 
     def randomise(self, random_seed=None):
         if random_seed is not None:
@@ -27,7 +29,10 @@ class Environment:
                        for _ in range(Environment.LENGTH)]
                        for _ in range(Environment.LENGTH)])
         self.robot = None
+        self.reward = 0
         self.actions = []
+        self.rewards = []
+        self.number_of_cans = self.count_cans()
 
     def printable_grid(self):
         grid = np.array(self.grid)
@@ -47,12 +52,13 @@ class Environment:
         robot.y = 0
         robot.score = 0
 
-    def number_of_cans(self):
+    def count_cans(self):
         return np.count_nonzero(self.grid == 1)
 
     def pick_up_can(self):
         if self.grid[self.robot.x][self.robot.y] == 1:
             self.reward = Environment.REWARD_FOR_PICKING_UP_CAN
+            self.number_of_cans -= 1
             if self.record_actions:
                 self.actions.append('pick up can')
         else:
@@ -138,4 +144,5 @@ class Environment:
             case Action.do_nothing:
                 self.do_nothing()
         self.robot.score += self.reward
-        self.rewards.append(self.reward)
+        if self.record_rewards:
+            self.rewards.append(self.reward)
