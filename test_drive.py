@@ -3,12 +3,12 @@ import time
 from colorama import init, Back
 
 from Problem_Domain.environment import Environment
-from Robots.base_robot import BaseRobot as Robot
+# from Robots.base_robot import BaseRobot as Robot
 # from Robots.sensing_robot import SensingRobot as Robot
 # from Robots.smarter_sensing_robot import SmarterSensingRobot as Robot
 # from Robots.can_following_robot import CanFollowingRobot as Robot
 # from Robots.experimental_robot import ExperimentalRobot as Robot
-# from Robots.lookup_table_robot import LookupTableRobot as Robot
+from Robots.lookup_table_robot import LookupTableRobot as Robot
 # from Reinforcement_Learning.train_q_learner import get_trained_q_learning_robot
 # from Reinforcement_Learning.train_q_learner import get_trained_q_learning_robot_optimized
 
@@ -27,9 +27,9 @@ ENVIRONMENT = Environment(record_rewards=True)
 init(autoreset=True)
 env_colour_map = {
     0: Back.BLACK + '  ',
-    1: Back.YELLOW + '  ',
+    1: Back.BLACK + '🥫',
     3: Back.BLACK + '🤖',
-    4: Back.YELLOW + '🤖',
+    4: Back.BLUE + '🤖',
 }
 
 reward_colour_map = {
