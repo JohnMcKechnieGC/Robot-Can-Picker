@@ -3,12 +3,12 @@ import time
 from colorama import init, Back
 
 from Problem_Domain.environment import Environment
-# from Robots.base_robot import BaseRobot as Robot
+from Robots.base_robot import BaseRobot as Robot
 # from Robots.sensing_robot import SensingRobot as Robot
 # from Robots.smarter_sensing_robot import SmarterSensingRobot as Robot
 # from Robots.can_following_robot import CanFollowingRobot as Robot
 # from Robots.experimental_robot import ExperimentalRobot as Robot
-from Robots.lookup_table_robot import LookupTableRobot as Robot
+# from Robots.lookup_table_robot import LookupTableRobot as Robot
 # from Reinforcement_Learning.train_q_learner import get_trained_q_learning_robot
 # from Reinforcement_Learning.train_q_learner import get_trained_q_learning_robot_optimized
 
@@ -35,8 +35,8 @@ env_colour_map = {
 reward_colour_map = {
     -5: Back.RED + '  ',
     -1: Back.MAGENTA + '  ',
-    0: Back.BLACK + ' ',
-    10: Back.GREEN + ' ',
+    0: Back.BLACK + '  ',
+    10: Back.GREEN + '  ',
 }
 
 def clear_screen():
@@ -59,7 +59,7 @@ def display(step, action):
     print(action)
 
 
-ENVIRONMENT.randomise(time.time())
+ENVIRONMENT.randomise(time.time())  # Seed the random number generator
 ROBOT.set_environment(ENVIRONMENT)
 ENVIRONMENT.set_robot(ROBOT)
 clear_screen()
