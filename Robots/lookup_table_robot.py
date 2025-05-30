@@ -27,7 +27,6 @@ class LookupTableRobot(BaseRobot):
         self.action_lookup_table = action_lookup_table
 
     def choose_action(self):
-        self.sense_environment()
-        self.calculate_situation_number()
-        action_number = self.action_lookup_table[self.situation_number]
+        _, situation_number = self.sense_environment()
+        action_number = self.action_lookup_table[situation_number]
         return self.actions[action_number]

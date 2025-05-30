@@ -25,6 +25,10 @@ class BaseRobot:
         return choice(self.actions)
 
     def sense_environment(self):
+        """
+        Sense the environment and return the sensory data and situation number.
+        Also updates self.sensory_data, self.situation_number.
+        """
         sensor_string = ''
         for (x, y) in [(self.x, self.y - 1),
                        (self.x - 1, self.y),
@@ -51,6 +55,7 @@ class BaseRobot:
             else Feature.can if sensor_string[3] == '1' else Feature.empty
         self.sensory_data.south_square = Feature.wall if sensor_string[4] == '2' \
             else Feature.can if sensor_string[4] == '1' else Feature.empty
+        return self.sensory_data, self.situation_number
 
     def calculate_situation_number(self):
         self.situation_number = 0

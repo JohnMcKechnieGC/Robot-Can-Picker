@@ -28,14 +28,23 @@ class QLearningRobot(BaseRobot):
 
     def initialize_q_table(self):
         """Each state/action pair is assigned a small random value."""
-        max_states = 3 ** 5  # Robot can see 5 squares, 3 possible values each (empty, can, wall)
+        # Robot can see 5 squares, 3 possible values each (empty, can, wall)
+        # This gives 3 ** 5 (243) possible states
+        max_states = 3 ** 5
         self.q_table = [[random(), random(), random(), random(), random(), random(), random()]
                         for _ in range(max_states)]
         # Alternatively, we can initialize the Q-Table with all zeros
         # self.q_table = [[0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0] for _ in range(max_states)]
 
     def choose_action(self, is_learning=False):
-        self.sense_environment()
+        """
+        Choose an action based on the current state of the environment and the Q-table.
+        If is_learning is True, the robot will choose a random action with probability epsilon.
+        Otherwise, it will choose the best known action based on the Q-table.
+        """
+        # situation number is an integer representing the current state
+        _, situation_number = self.sense_environment()
+
         # If the robot is still exploring the range of possible actions rather than just
         # exploiting what it has already learned, and if a random action should be chosen
         if is_learning and self.should_choose_random_action():
@@ -43,8 +52,7 @@ class QLearningRobot(BaseRobot):
             action_number = randint(0, len(self.actions) - 1)
         else:
             # Pick the best known action (or one of them if more than one)
-            self.calculate_situation_number()
-            q_values = self.q_table[self.situation_number]
+            q_values = self.q_table[situation_number]
             max_q = max(q_values)
             best_actions = [action for action in range(len(q_values))
                             if q_values[action] == max_q]
@@ -68,9 +76,9 @@ class QLearningRobot(BaseRobot):
     def reinforce(self, reward):
         """Apply the Q-Learning formula."""
         assert self.last_action_number is not None
-        previous_situation_number = self.situation_number
 
-        current_q_value = self.q_table[previous_situation_number][self.last_action_number]
+        situation_number_before_action = self.situation_number
+        current_q_value = self.q_table[situation_number_before_action][self.last_action_number]
 
         # Calculate the new Q-value
         # Q(s, a) <- Q(s, a) + α * (r + γ * max(Q(s', a')) - Q(s, a))
@@ -79,7 +87,7 @@ class QLearningRobot(BaseRobot):
             self.learning_rate * (reward + self.discount_factor * max_next_q - current_q_value)
 
         # Update the Q-table with new Q-value
-        self.q_table[previous_situation_number][self.last_action_number] = new_q_value
+        self.q_table[situation_number_before_action][self.last_action_number] = new_q_value
 
     def calculate_max_q_next_state(self):
         """
@@ -88,9 +96,8 @@ class QLearningRobot(BaseRobot):
         """
 
         # Get the new environment configuration following the most recent action
-        self.sense_environment()
-        self.calculate_situation_number()
+        _, situation_number_after_action = self.sense_environment()
 
-        possible_next_q_values = self.q_table[self.situation_number]
+        possible_next_q_values = self.q_table[situation_number_after_action]
         max_next_q = max(possible_next_q_values)
         return max_next_q
