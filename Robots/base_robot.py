@@ -56,15 +56,3 @@ class BaseRobot:
         self.sensory_data.south_square = Feature.wall if sensor_string[4] == '2' \
             else Feature.can if sensor_string[4] == '1' else Feature.empty
         return self.sensory_data, self.situation_number
-
-    def calculate_situation_number(self):
-        self.situation_number = 0
-        for (x, y, multiplier) in [(self.x,     self.y - 1,  1),
-                                   (self.x - 1, self.y,      3),
-                                   (self.x,     self.y,      9),
-                                   (self.x + 1, self.y,     27),
-                                   (self.x,     self.y + 1, 81)]:
-            if y == -1 or y == Environment.LENGTH or x == -1 or x == Environment.LENGTH:
-                self.situation_number += 2 * multiplier
-            else:
-                self.situation_number += self.environment.grid[x][y] * multiplier
