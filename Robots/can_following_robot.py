@@ -3,25 +3,47 @@ from random import choice
 
 
 class CanFollowingRobot(SmarterSensingRobot):
+    """
+    Pick up a can if possible, otherwise walk towards a can if one can be seen.
+    """
+    def get_default_action(self):
+        """
+        Use the SmarterSensingRobot to get the default action,
+        but don't accept the do nothing action.
+        """
+        default_action = SmarterSensingRobot.choose_action(self)
+        while default_action == Action.do_nothing:
+            default_action = SmarterSensingRobot.choose_action(self)
+        return default_action
+
+    def get_actions_that_move_towards_a_can(self):
+        """
+        Find all the actions that move towards a can.
+        """
+        actions = []
+        if self.sensory_data.north_square == Feature.can:
+            actions.append(Action.move_north)
+        if self.sensory_data.east_square == Feature.can:
+            actions.append(Action.move_east)
+        if self.sensory_data.south_square == Feature.can:
+            actions.append(Action.move_south)
+        if self.sensory_data.west_square == Feature.can:
+            actions.append(Action.move_west)
+        return actions
+
     def choose_action(self):
-        # Use the SmarterSensingRobot to get the default action.
-        while True:
-            action = SmarterSensingRobot.choose_action(self)
-            if action != Action.do_nothing:
-                break
+        """
+        Returns:
+        - The action to pick up a can if possible,
+        - otherwise an action that walks towards a can if one can be seen,
+        - otherwise an action chosen by the base class.
+        """
+        default_action = self.get_default_action()
+        if default_action == Action.pick_up_can:
+            return default_action
 
-        # Favour actions that walk towards a can if we can't pick one up right now.
-        if action != Action.pick_up_can:
-            replacement_actions = []
-            if self.sensory_data.north_square == Feature.can:
-                replacement_actions.append(Action.move_north)
-            if self.sensory_data.east_square == Feature.can:
-                replacement_actions.append(Action.move_east)
-            if self.sensory_data.south_square == Feature.can:
-                replacement_actions.append(Action.move_south)
-            if self.sensory_data.west_square == Feature.can:
-                replacement_actions.append(Action.move_west)
-            if len(replacement_actions) > 0:
-                action = choice(replacement_actions)
+        alternative_actions = self.get_actions_that_move_towards_a_can()
+        if alternative_actions:
+            return choice(alternative_actions)
 
-        return action
+        return default_action
