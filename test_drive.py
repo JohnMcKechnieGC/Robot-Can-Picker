@@ -1,26 +1,28 @@
+"""
+This script lets you test a simple simulated robot
+in a randomly generated environment.
+
+Import whichever robot you want to test drive.
+"""
 import os
 import time
 from colorama import init, Back
-
 from Problem_Domain.environment import Environment
-from Robots.base_robot import BaseRobot as Robot
+
+# from Robots.base_robot import BaseRobot as Robot
 # from Robots.sensing_robot import SensingRobot as Robot
 # from Robots.smarter_sensing_robot import SmarterSensingRobot as Robot
 # from Robots.can_following_robot import CanFollowingRobot as Robot
 # from Robots.experimental_robot import ExperimentalRobot as Robot
 # from Robots.lookup_table_robot import LookupTableRobot as Robot
-# from Reinforcement_Learning.train_q_learner import get_trained_q_learning_robot
-# from Reinforcement_Learning.train_q_learner import get_trained_q_learning_robot_optimized
+# from Reinforcement_Learning.train_q_learner import get_trained_q_learning_robot as Robot
+from Reinforcement_Learning.train_q_learner import get_trained_q_learning_robot_optimized as Robot
 
-# Choose which robot to test:
-# Be sure to comment/uncomment the appropriate import statements above
+
 ROBOT = Robot('Robot under test')
-# Q-Learning robots
-# ROBOT = get_trained_q_learning_robot('Robot under test')
-# ROBOT = get_trained_q_learning_robot_optimized('Robot under test')
-
 NUMBER_OF_ACTIONS = 200
 REDRAW_DELAY = 0.2
+REWARD_WINDOW_LENGTH = 40
 ENVIRONMENT = Environment(record_rewards=True)
 
 
@@ -54,12 +56,14 @@ def display(step, action):
     print(f'Cans: {ENVIRONMENT.count_cans()}')
     print(f'Score: {ROBOT.score}')
     print(f'Reward: {ENVIRONMENT.reward}')
-    print(f'Rewards: {''.join(reward_colour_map[val] for val in ENVIRONMENT.recent_rewards(40))}')
+    print(f'Rewards: {''.join(reward_colour_map[val] \
+                              for val in ENVIRONMENT.recent_rewards(REWARD_WINDOW_LENGTH))}')
     print(f'Time step: {step}')
     print(action)
 
 
-ENVIRONMENT.randomise(time.time())  # Seed the random number generator
+# Ramdomise the environment with the current time to get a different environment each time.
+ENVIRONMENT.randomise(time.time())
 ROBOT.set_environment(ENVIRONMENT)
 ENVIRONMENT.set_robot(ROBOT)
 clear_screen()
