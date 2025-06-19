@@ -1,3 +1,7 @@
+"""
+Find the best parameters for the QLearningRobot using a grid search.
+Warning: This script will take a long time to run as it's currently configured.
+"""
 from random import seed
 import itertools
 import statistics
