@@ -1,3 +1,9 @@
+"""
+BaseRobot provides core functionality for robot controllers such as setting and sensing
+an environment. The choose_action method simply chooses one of the possible actions at
+random. This method can be overridden in more advanced robot controllers.
+"""
+
 from random import choice
 
 from Problem_Domain.action import Action
@@ -6,6 +12,9 @@ from Problem_Domain.sensory_data import SensoryData, Feature
 
 
 class BaseRobot:
+    """
+    Base class for robot controllers.
+    """
     def __init__(self, name=''):
         self.x = 0
         self.y = 0
@@ -18,10 +27,14 @@ class BaseRobot:
         self.environment = None
 
     def set_environment(self, environment):
+        """
+        Set an environment that the robot can use to update its sensory data about what
+        it can currently perceive.
+        """
         self.environment = environment
 
     def choose_action(self):
-        # Choose an action at random
+        """Choose an action at random"""
         return choice(self.actions)
 
     def sense_environment(self):
