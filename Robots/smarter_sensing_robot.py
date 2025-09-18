@@ -1,4 +1,3 @@
-from tkinter import N
 from Robots.base_robot import BaseRobot, Feature, Action
 
 
