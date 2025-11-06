@@ -66,5 +66,3 @@ def get_trained_q_learning_robot_optimized(name):
                                         discount_factor=0.5,
                                         min_epsilon=0.0,
                                         number_of_episodes=1200)
-
-# 'learning_rate': 0.9, 'discount_factor': 0.5, 'min_epsilon': 0.0, 'number_of_episodes': 1200}
